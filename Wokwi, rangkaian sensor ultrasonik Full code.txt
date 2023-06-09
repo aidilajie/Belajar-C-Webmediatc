@@ -1,0 +1,48 @@
+void setup() {
+  pinMode(6, OUTPUT);//trigger
+  pinMode(7, INPUT);//echo
+  pinMode(2, OUTPUT);//merah
+  pinMode(3, OUTPUT);//kuning
+  pinMode(4, OUTPUT);//hijau
+  Serial.begin(9600);
+
+}
+
+void loop() {
+  digitalWrite(6, LOW);
+  delayMicroseconds(2);
+  digitalWrite(6, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(6, LOW);
+  //trigger
+
+int jeda = pulseIn(7,HIGH);
+float jarak = jeda * 0.034/2;
+//echo
+
+if(jarak <=100 && jarak >70){
+  digitalWrite(2, HIGH);// lampu merah idup
+  digitalWrite(3, LOW);//lampu kuning mati
+  digitalWrite(4,LOW);//lampu hijau mati
+}
+else if(jarak <=70 && jarak >40){
+  digitalWrite(3, LOW);//lampu kuning mati
+  digitalWrite(2, LOW);// lampu merah mati
+  digitalWrite(4, HIGH);//lampu hijau idup
+}
+else if (jarak <=40){
+  digitalWrite(4,LOW);//lampu hijau mati
+  digitalWrite(3, HIGH);// lampu kuning idup
+  digitalWrite(2, LOW);// lampu merah mati
+}
+else{
+  digitalWrite(2, LOW);
+  digitalWrite(3, LOW);
+  digitalWrite(4, LOW);
+}
+
+Serial.print("Jaraknya = ");
+Serial.print(jarak);
+Serial.println(" cm");
+delay(750);
+}
